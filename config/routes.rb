@@ -19,5 +19,6 @@ Rails.application.routes.draw do
     resource :profile, only: %i[show update]
 
     resources :routes
+    resources :ride_offers, only: %i[index create update]
   end
 end

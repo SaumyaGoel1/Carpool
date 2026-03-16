@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_16_004000) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_16_005000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -30,6 +30,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_16_004000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_organizations_on_name", unique: true
+  end
+
+  create_table "ride_offers", force: :cascade do |t|
+    t.bigint "route_id", null: false
+    t.integer "seats_available", default: 1, null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["route_id"], name: "index_ride_offers_on_route_id"
   end
 
   create_table "routes", force: :cascade do |t|
@@ -62,6 +71,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_16_004000) do
 
   add_foreign_key "memberships", "organizations"
   add_foreign_key "memberships", "users"
+  add_foreign_key "ride_offers", "routes"
   add_foreign_key "routes", "organizations"
   add_foreign_key "routes", "users"
 end
