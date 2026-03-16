@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="64" height="64" aria-hidden="true">
+  <defs>
+    <linearGradient id="viteGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#41D1FF" />
+      <stop offset="100%" stop-color="#BD34FE" />
+    </linearGradient>
+    <linearGradient id="viteGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFEA83" />
+      <stop offset="50%" stop-color="#FFDD35" />
+      <stop offset="100%" stop-color="#FFA800" />
+    </linearGradient>
+  </defs>
+  <path
+    fill="url(#viteGradient1)"
+    d="M15 40L128 8l113 32-22 150-91 58-91-58L15 40z"
+  />
+  <path
+    fill="url(#viteGradient2)"
+    d="M128 32l60 18-56 134a4 4 0 0 1-7 0L68 50l60-18z"
+  />
+</svg>
