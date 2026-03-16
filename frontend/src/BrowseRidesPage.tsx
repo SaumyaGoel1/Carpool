@@ -22,12 +22,21 @@ export function BrowseRidesPage() {
   const [rides, setRides] = useState<RideOffer[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [requestError, setRequestError] = useState<string | null>(null)
+  const [requestSuccess, setRequestSuccess] = useState<string | null>(null)
 
   const [search, setSearch] = useState('')
   const [from, setFrom] = useState('')
   const [to, setTo] = useState('')
   const [date, setDate] = useState('')
   const [minSeats, setMinSeats] = useState(1)
+
+  const [requestMessages, setRequestMessages] = useState<Record<number, string>>(
+    {},
+  )
+  const [requestStatus, setRequestStatus] = useState<
+    Record<number, 'idle' | 'sending' | 'sent'>
+  >({})
 
   async function load() {
     setLoading(true)
@@ -73,7 +82,63 @@ export function BrowseRidesPage() {
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault()
+    setRequestError(null)
+    setRequestSuccess(null)
     load()
+  }
+
+  async function handleRequestRide(rideId: number) {
+    if (!token) return
+
+    setRequestError(null)
+    setRequestSuccess(null)
+    setRequestStatus((prev) => ({ ...prev, [rideId]: 'sending' }))
+
+    try {
+      const baseUrl =
+        import.meta.env.VITE_API_URL || 'http://localhost:3000'
+
+      const message = requestMessages[rideId] ?? ''
+
+      const res = await fetch(`${baseUrl}/api/ride_offers/${rideId}/requests`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          request: {
+            message,
+          },
+        }),
+      })
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        const msg =
+          (Array.isArray(body.errors) && body.errors.join(', ')) ||
+          body.error ||
+          'Could not send request'
+
+        // If backend reports an active request already exists, treat as sent.
+        if (msg.toLowerCase().includes('already have an active request')) {
+          setRequestStatus((prev) => ({ ...prev, [rideId]: 'sent' }))
+          setRequestSuccess('You already have an active request for this ride.')
+        } else {
+          setRequestStatus((prev) => ({ ...prev, [rideId]: 'idle' }))
+          setRequestError(msg)
+        }
+        return
+      }
+
+      setRequestStatus((prev) => ({ ...prev, [rideId]: 'sent' }))
+      setRequestSuccess('Request sent to driver.')
+    } catch (e) {
+      setRequestStatus((prev) => ({ ...prev, [rideId]: 'idle' }))
+      setRequestError(
+        e instanceof Error ? e.message : 'Could not send request',
+      )
+    }
   }
 
   return (
@@ -165,6 +230,14 @@ export function BrowseRidesPage() {
 
           {!loading && error && <p className="auth-error">{error}</p>}
 
+          {!loading && !error && requestError && (
+            <p className="auth-error">{requestError}</p>
+          )}
+
+          {!loading && !error && requestSuccess && (
+            <p className="profile-success">{requestSuccess}</p>
+          )}
+
           {!loading && !error && rides.length === 0 && (
             <p>No rides match your filters yet. Try broadening your search.</p>
           )}
@@ -203,6 +276,38 @@ export function BrowseRidesPage() {
                     <div className="routes-meta">
                       Seats available: {ride.seats_available}
                     </div>
+                    <div className="routes-meta">
+                      <label>
+                        Optional message to driver
+                        <input
+                          type="text"
+                          value={requestMessages[ride.id] ?? ''}
+                          onChange={(e) =>
+                            setRequestMessages((prev) => ({
+                              ...prev,
+                              [ride.id]: e.target.value,
+                            }))
+                          }
+                          placeholder="e.g. pickup near Uttam Nagar West"
+                        />
+                      </label>
+                    </div>
+                  </div>
+                  <div className="routes-item-actions">
+                    <button
+                      type="button"
+                      disabled={
+                        requestStatus[ride.id] === 'sending' ||
+                        requestStatus[ride.id] === 'sent'
+                      }
+                      onClick={() => handleRequestRide(ride.id)}
+                    >
+                      {requestStatus[ride.id] === 'sent'
+                        ? 'Request sent'
+                        : requestStatus[ride.id] === 'sending'
+                          ? 'Requesting…'
+                          : 'Request ride'}
+                    </button>
                   </div>
                 </li>
               ))}

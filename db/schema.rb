@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_16_005000) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_16_006000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -30,6 +30,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_16_005000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_organizations_on_name", unique: true
+  end
+
+  create_table "pooling_requests", force: :cascade do |t|
+    t.bigint "requester_id", null: false
+    t.bigint "ride_offer_id", null: false
+    t.string "status", default: "pending", null: false
+    t.text "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["requester_id", "ride_offer_id", "status"], name: "index_pooling_requests_on_requester_offer_status"
+    t.index ["requester_id"], name: "index_pooling_requests_on_requester_id"
+    t.index ["ride_offer_id"], name: "index_pooling_requests_on_ride_offer_id"
   end
 
   create_table "ride_offers", force: :cascade do |t|
@@ -71,6 +83,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_16_005000) do
 
   add_foreign_key "memberships", "organizations"
   add_foreign_key "memberships", "users"
+  add_foreign_key "pooling_requests", "ride_offers"
+  add_foreign_key "pooling_requests", "users", column: "requester_id"
   add_foreign_key "ride_offers", "routes"
   add_foreign_key "routes", "organizations"
   add_foreign_key "routes", "users"
