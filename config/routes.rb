@@ -23,6 +23,10 @@ Rails.application.routes.draw do
       post "requests", to: "ride_offers#requests_create"
     end
 
-    resources :requests, only: %i[index update]
+    resources :requests, only: %i[index update] do
+      patch "cancel", on: :member
+    end
+
+    get "my/requests", to: "requests#my_index"
   end
 end

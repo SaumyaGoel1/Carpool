@@ -1,6 +1,6 @@
 class RequestsController < ActionController::API
   before_action :authenticate_user!
-  before_action :set_request, only: %i[update]
+  before_action :set_request_for_driver, only: %i[update]
 
   def index
     requests = PoolingRequest
@@ -11,6 +11,14 @@ class RequestsController < ActionController::API
     grouped = requests.group_by(&:ride_offer)
 
     render json: grouped.map { |offer, reqs| serialize_group(offer, reqs) }
+  end
+
+  def my_index
+    requests = PoolingRequest
+               .includes(ride_offer: { route: :user })
+               .where(requester_id: current_user.id)
+
+    render json: requests.map { |r| serialize_my_request(r) }
   end
 
   def update
@@ -34,6 +42,18 @@ class RequestsController < ActionController::API
     render json: { errors: @request.errors.full_messages.presence || [e.message] }, status: :unprocessable_entity
   end
 
+  def cancel
+    request = PoolingRequest.find_by!(id: params[:id], requester_id: current_user.id)
+
+    unless request.status == "pending"
+      return render json: { errors: ["Only pending requests can be cancelled"] }, status: :unprocessable_entity
+    end
+
+    request.update!(status: "cancelled")
+
+    render json: serialize_my_request(request)
+  end
+
   private
 
   def authenticate_user!
@@ -53,7 +73,7 @@ class RequestsController < ActionController::API
     @current_user
   end
 
-  def set_request
+  def set_request_for_driver
     @request = PoolingRequest
                .joins(ride_offer: :route)
                .where(routes: { user_id: current_user.id })
@@ -93,6 +113,27 @@ class RequestsController < ActionController::API
       ride_offer_id: request.ride_offer_id,
       status: request.status,
       message: request.message
+    }
+  end
+
+  def serialize_my_request(request)
+    offer = request.ride_offer
+    route = offer.route
+    driver = route.user
+
+    {
+      id: request.id,
+      ride_offer_id: offer.id,
+      status: request.status,
+      message: request.message,
+      start_location: route.start_location,
+      end_location: route.end_location,
+      waypoints: route.waypoints,
+      recurrence: route.recurrence,
+      start_time: route.start_time&.strftime("%H:%M"),
+      end_time: route.end_time&.strftime("%H:%M"),
+      driver_name: driver.name,
+      driver_email: driver.email
     }
   end
 

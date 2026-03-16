@@ -15,6 +15,9 @@ function App() {
             <Link to="/driver-requests" className="app-link-button">
               My ride requests
             </Link>
+            <Link to="/my-requests" className="app-link-button">
+              My requests
+            </Link>
             <Link to="/browse-rides" className="app-link-button">
               Browse rides
             </Link>
