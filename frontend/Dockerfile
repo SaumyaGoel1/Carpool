@@ -5,7 +5,7 @@ WORKDIR /app
 ENV NODE_ENV=development \
     PATH=/app/node_modules/.bin:$PATH
 
-COPY package.json package-lock.json* pnpm-lock.yaml* bun.lockb* .npmrc* ./ 2>/dev/null || true
+COPY package.json package-lock.json* pnpm-lock.yaml* bun.lockb* .npmrc* ./
 RUN npm install
 
 COPY . .
