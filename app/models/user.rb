@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :memberships, dependent: :destroy
   has_many :organizations, through: :memberships
   has_many :routes, dependent: :destroy
+  has_many :pooling_requests, foreign_key: :requester_id, dependent: :destroy
 
   validates :email, presence: true, uniqueness: true,
                     format: { with: URI::MailTo::EMAIL_REGEXP }

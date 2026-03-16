@@ -33,6 +33,30 @@ class RideOffersController < ActionController::API
     render json: serialize_ride_offer(@ride_offer)
   end
 
+  def requests_create
+    offer = RideOffer
+            .joins(:route)
+            .where(
+              routes: {
+                organization_id: current_organization_id
+              },
+              active: true
+            ).find(params[:ride_offer_id])
+
+    request = PoolingRequest.new(
+      requester: current_user,
+      ride_offer: offer,
+      message: request_params[:message],
+      status: "pending"
+    )
+
+    if request.save
+      render json: serialize_request(request), status: :created
+    else
+      render json: { errors: request.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def authenticate_user!
@@ -82,6 +106,10 @@ class RideOffersController < ActionController::API
       :seats_available,
       :active
     )
+  end
+
+  def request_params
+    params.require(:request).permit(:message)
   end
 
   def serialize_ride_offer(offer)
@@ -163,6 +191,16 @@ class RideOffersController < ActionController::API
     end
 
     scope
+  end
+
+  def serialize_request(request)
+    {
+      id: request.id,
+      requester_id: request.requester_id,
+      ride_offer_id: request.ride_offer_id,
+      status: request.status,
+      message: request.message
+    }
   end
 end
 
