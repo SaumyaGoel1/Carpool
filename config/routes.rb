@@ -15,5 +15,7 @@ Rails.application.routes.draw do
   scope :api do
     post "sign_up", to: "registrations#create"
     post "sign_in", to: "sessions#create"
+
+    resource :profile, only: %i[show update]
   end
 end
