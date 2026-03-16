@@ -1,25 +1,40 @@
 
-# README
+# Car Pooling
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A single-organization car pooling app: users define routes and send or accept pooling requests (e.g. for a company or campus).
 
-Things you may want to cover:
+**Tech stack:** Ruby on Rails (backend), React + TypeScript (frontend), PostgreSQL, Docker, AWS.
 
-* Ruby version
+## Repository layout
 
-* System dependencies
+- `app/`, `config/`, `db/`, etc. – Rails application (API + server‑rendered views).
+- `frontend/` – React SPA (TypeScript, Vite) that will talk to the Rails backend.
 
-* Configuration
+## Run locally
 
-* Database creation
+### Backend (Rails)
 
-* Database initialization
+```bash
+bundle install
+bin/rails db:prepare
+bin/rails server
+```
 
-* How to run the test suite
+Backend runs on http://localhost:3000.
 
-* Services (job queues, cache servers, search engines, etc.)
+### Frontend (React)
 
-* Deployment instructions
+From the repo root:
 
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
+Frontend runs on http://localhost:5173.
+
+## Next steps
+
+- Wire the frontend to call Rails APIs for routes and pooling requests.
+- Add more detailed setup notes (environment variables, Docker usage, deployment) as the project evolves.
