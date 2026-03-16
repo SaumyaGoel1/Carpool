@@ -12,6 +12,9 @@ function App() {
         {user && (
           <div className="app-header-user">
             <span>{user.email}</span>
+            <Link to="/routes" className="app-link-button">
+              My routes
+            </Link>
             <Link to="/profile" className="app-link-button">
               Profile
             </Link>

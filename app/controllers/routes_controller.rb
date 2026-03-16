@@ -3,7 +3,11 @@ class RoutesController < ActionController::API
   before_action :set_route, only: %i[show update destroy]
 
   def index
-    routes = current_user.routes.where(organization_id: current_organization_id)
+    routes = if current_organization_id
+               current_user.routes.where(organization_id: current_organization_id)
+             else
+               current_user.routes
+             end
     render json: routes.map { |r| serialize_route(r) }
   end
 
@@ -50,7 +54,16 @@ class RoutesController < ActionController::API
   end
 
   def current_organization_id
-    @current_user&.memberships&.first&.organization_id
+    return @current_organization_id if defined?(@current_organization_id)
+
+    membership = @current_user&.memberships&.first
+
+    if membership.nil?
+      org = Organization.find_or_create_by!(name: "Default Org")
+      membership = Membership.create!(user: @current_user, organization: org)
+    end
+
+    @current_organization_id = membership.organization_id
   end
 
   def set_route

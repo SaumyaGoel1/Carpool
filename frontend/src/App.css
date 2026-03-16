@@ -158,3 +158,140 @@ main {
 .app-link-button:hover {
   background: #f3f3f3;
 }
+
+.routes-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.routes-list {
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  padding: 1.25rem;
+}
+
+.routes-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.routes-list-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.routes-list-header button {
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.75rem;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.routes-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.routes-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.routes-item:last-child {
+  border-bottom: none;
+}
+
+.routes-item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.routes-line {
+  font-size: 0.95rem;
+}
+
+.routes-meta {
+  color: #6b7280;
+  font-size: 0.8rem;
+}
+
+.routes-item-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.routes-item-actions button {
+  padding: 0.25rem 0.6rem;
+  border-radius: 0.6rem;
+  border: 1px solid #d4d4d8;
+  background: #fff;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.routes-form-card {
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  padding: 1.25rem;
+}
+
+.routes-form-card h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.routes-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.routes-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.routes-form input {
+  padding: 0.5rem 0.7rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d4d4d8;
+  font-size: 0.9rem;
+}
+
+.routes-time-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.routes-form button {
+  align-self: flex-start;
+  padding: 0.55rem 0.85rem;
+  border-radius: 0.75rem;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
