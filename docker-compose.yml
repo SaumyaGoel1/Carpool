@@ -1,4 +1,23 @@
+# One command runs API, DB, and frontend: docker compose up
 services:
+  frontend:
+    image: app-frontend-dev
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: development
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost:3000
+    command: sh -c "npm install && npm run dev"
+    depends_on:
+      app:
+        condition: service_healthy
+
   app:
     build:
       context: .
@@ -10,12 +29,20 @@ services:
       - "3000:3000"
     environment:
       RAILS_ENV: development
+    working_dir: /app
     command: >
       sh -c "rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p 3000"
     stdin_open: true
     tty: true
     depends_on:
       - db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/up"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
+
   db:
     image: postgres:17
     environment:
