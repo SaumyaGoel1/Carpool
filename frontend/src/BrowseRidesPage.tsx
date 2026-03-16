@@ -148,6 +148,9 @@ export function BrowseRidesPage() {
         {user && (
           <div className="app-header-user">
             <span>{user.email}</span>
+            <Link to="/driver-requests" className="app-link-button">
+              My ride requests
+            </Link>
             <Link to="/browse-rides" className="app-link-button">
               Browse rides
             </Link>

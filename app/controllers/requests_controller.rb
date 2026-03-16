@@ -2,6 +2,17 @@ class RequestsController < ActionController::API
   before_action :authenticate_user!
   before_action :set_request, only: %i[update]
 
+  def index
+    requests = PoolingRequest
+               .includes(:requester, ride_offer: :route)
+               .joins(ride_offer: :route)
+               .where(routes: { user_id: current_user.id })
+
+    grouped = requests.group_by(&:ride_offer)
+
+    render json: grouped.map { |offer, reqs| serialize_group(offer, reqs) }
+  end
+
   def update
     new_status = request_params[:status]
 
@@ -82,6 +93,29 @@ class RequestsController < ActionController::API
       ride_offer_id: request.ride_offer_id,
       status: request.status,
       message: request.message
+    }
+  end
+
+  def serialize_group(offer, requests)
+    {
+      ride_offer_id: offer.id,
+      seats_available: offer.seats_available,
+      start_location: offer.route.start_location,
+      end_location: offer.route.end_location,
+      waypoints: offer.route.waypoints,
+      recurrence: offer.route.recurrence,
+      start_time: offer.route.start_time&.strftime("%H:%M"),
+      end_time: offer.route.end_time&.strftime("%H:%M"),
+      requests: requests.map do |r|
+        {
+          id: r.id,
+          requester_id: r.requester_id,
+          requester_name: r.requester.name,
+          requester_email: r.requester.email,
+          message: r.message,
+          status: r.status
+        }
+      end
     }
   end
 end

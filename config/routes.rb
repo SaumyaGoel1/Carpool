@@ -23,6 +23,6 @@ Rails.application.routes.draw do
       post "requests", to: "ride_offers#requests_create"
     end
 
-    resources :requests, only: %i[update]
+    resources :requests, only: %i[index update]
   end
 end
