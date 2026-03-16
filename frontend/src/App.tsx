@@ -1,5 +1,6 @@
 import './App.css'
 import { useAuth } from './AuthContext'
+import { Link } from 'react-router-dom'
 
 function App() {
   const { user, logout } = useAuth()
@@ -11,6 +12,9 @@ function App() {
         {user && (
           <div className="app-header-user">
             <span>{user.email}</span>
+            <Link to="/profile" className="app-link-button">
+              Profile
+            </Link>
             <button type="button" onClick={logout}>
               Logout
             </button>
@@ -19,7 +23,6 @@ function App() {
       </header>
       <section>
         <p>Define routes, send and accept pooling requests.</p>
-        <p>You are signed in and can access protected features here.</p>
       </section>
     </main>
   )

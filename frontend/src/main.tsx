@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from './AuthContext'
 import { ProtectedRoute } from './ProtectedRoute'
 import { LoginPage } from './LoginPage'
+import { ProfilePage } from './ProfilePage'
 
 createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
@@ -15,6 +16,7 @@ createRoot(document.getElementById('root') as HTMLElement).render(
           <Route path="/login" element={<LoginPage />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<App />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Route>
         </Routes>
       </BrowserRouter>
