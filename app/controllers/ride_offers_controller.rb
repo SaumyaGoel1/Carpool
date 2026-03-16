@@ -4,8 +4,10 @@ class RideOffersController < ActionController::API
 
   def index
     offers = RideOffer
-             .joins(:route)
+             .joins(route: :user)
              .where(routes: { organization_id: current_organization_id }, active: true)
+
+    offers = apply_filters(offers)
 
     render json: offers.map { |offer| serialize_ride_offer(offer) }
   end
@@ -87,8 +89,80 @@ class RideOffersController < ActionController::API
       id: offer.id,
       route_id: offer.route_id,
       seats_available: offer.seats_available,
-      active: offer.active
+      active: offer.active,
+      driver_name: offer.route.user.name,
+      driver_email: offer.route.user.email,
+      start_location: offer.route.start_location,
+      end_location: offer.route.end_location,
+      waypoints: offer.route.waypoints,
+      recurrence: offer.route.recurrence,
+      start_time: offer.route.start_time&.strftime("%H:%M"),
+      end_time: offer.route.end_time&.strftime("%H:%M")
     }
+  end
+
+  def apply_filters(scope)
+    scope = filter_by_min_seats(scope)
+    scope = filter_by_area(scope)
+    scope = filter_by_schedule(scope)
+    scope
+  end
+
+  def filter_by_min_seats(scope)
+    return scope unless params[:min_seats].present?
+
+    min = params[:min_seats].to_i
+    return scope if min <= 0
+
+    scope.where("ride_offers.seats_available >= ?", min)
+  end
+
+  def filter_by_area(scope)
+    from = params[:from].to_s.strip
+    to = params[:to].to_s.strip
+    q = params[:q].to_s.strip
+
+    return scope if from.empty? && to.empty? && q.empty?
+
+    conditions = []
+    values = []
+
+    unless from.empty?
+      conditions << "routes.start_location ILIKE ?"
+      values << "%#{from}%"
+    end
+
+    unless to.empty?
+      conditions << "routes.end_location ILIKE ?"
+      values << "%#{to}%"
+    end
+
+    unless q.empty?
+      conditions << "(routes.start_location ILIKE ? OR routes.end_location ILIKE ? OR COALESCE(routes.waypoints, '') ILIKE ?)"
+      3.times { values << "%#{q}%" }
+    end
+
+    scope.where(conditions.join(" AND "), *values)
+  end
+
+  def filter_by_schedule(scope)
+    if params[:date].present?
+      date = begin
+        Date.parse(params[:date])
+      rescue ArgumentError
+        nil
+      end
+
+      if date
+        weekday = date.strftime("%A").downcase
+        scope = scope.where("LOWER(COALESCE(routes.recurrence, '')) LIKE ?", "%#{weekday}%")
+      end
+    elsif params[:recurrence].present?
+      term = params[:recurrence].to_s.downcase
+      scope = scope.where("LOWER(COALESCE(routes.recurrence, '')) LIKE ?", "%#{term}%")
+    end
+
+    scope
   end
 end
 

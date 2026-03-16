@@ -8,6 +8,7 @@ import { ProtectedRoute } from './ProtectedRoute'
 import { LoginPage } from './LoginPage'
 import { ProfilePage } from './ProfilePage'
 import { RoutesPage } from './RoutesPage'
+import { BrowseRidesPage } from './BrowseRidesPage'
 
 createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
@@ -19,6 +20,7 @@ createRoot(document.getElementById('root') as HTMLElement).render(
             <Route path="/" element={<App />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/routes" element={<RoutesPage />} />
+            <Route path="/browse-rides" element={<BrowseRidesPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

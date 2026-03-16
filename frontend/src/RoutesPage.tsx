@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useAuth } from './AuthContext'
 
 type Route = {
@@ -21,7 +22,7 @@ const emptyRoute: Omit<Route, 'id'> = {
 }
 
 export function RoutesPage() {
-  const { token } = useAuth()
+  const { token, user, logout } = useAuth()
   const [routes, setRoutes] = useState<Route[]>([])
   const [editingId, setEditingId] = useState<number | null>(null)
   const [form, setForm] = useState(emptyRoute)
@@ -173,6 +174,26 @@ export function RoutesPage() {
   if (loading) {
     return (
       <main>
+        <header className="app-header">
+          <h1>My routes</h1>
+          {user && (
+            <div className="app-header-user">
+              <span>{user.email}</span>
+              <Link to="/browse-rides" className="app-link-button">
+                Browse rides
+              </Link>
+              <Link to="/routes" className="app-link-button">
+                My routes
+              </Link>
+              <Link to="/profile" className="app-link-button">
+                Profile
+              </Link>
+              <button type="button" onClick={logout}>
+                Logout
+              </button>
+            </div>
+          )}
+        </header>
         <p>Loading routes…</p>
       </main>
     )
@@ -182,6 +203,23 @@ export function RoutesPage() {
     <main>
       <header className="app-header">
         <h1>My routes</h1>
+        {user && (
+          <div className="app-header-user">
+            <span>{user.email}</span>
+            <Link to="/browse-rides" className="app-link-button">
+              Browse rides
+            </Link>
+            <Link to="/routes" className="app-link-button">
+              My routes
+            </Link>
+            <Link to="/profile" className="app-link-button">
+              Profile
+            </Link>
+            <button type="button" onClick={logout}>
+              Logout
+            </button>
+          </div>
+        )}
       </header>
 
       <section className="routes-layout">
