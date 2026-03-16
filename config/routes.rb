@@ -17,5 +17,7 @@ Rails.application.routes.draw do
     post "sign_in", to: "sessions#create"
 
     resource :profile, only: %i[show update]
+
+    resources :routes
   end
 end
