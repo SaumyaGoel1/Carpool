@@ -36,6 +36,11 @@ class RequestsController < ActionController::API
       approve_request!
     else
       @request.update!(status: "rejected")
+      create_notification!(
+        user: @request.requester,
+        type: "request_rejected",
+        reference: @request
+      )
       render json: serialize_request(@request)
     end
   rescue ActiveRecord::RecordInvalid => e
@@ -103,6 +108,11 @@ class RequestsController < ActionController::API
       )
     end
 
+    create_notification!(
+      user: @request.requester,
+      type: "request_approved",
+      reference: @request
+    )
     render json: serialize_request(@request)
   end
 
@@ -158,6 +168,14 @@ class RequestsController < ActionController::API
         }
       end
     }
+  end
+
+  def create_notification!(user:, type:, reference:)
+    Notification.create!(
+      user: user,
+      type: type,
+      reference: reference
+    )
   end
 end
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from './AuthContext'
+import { NotificationCenter } from './NotificationCenter'
 
 type MyRequest = {
   id: number
@@ -108,9 +109,13 @@ export function MyRequestsPage() {
         <h1>My requests</h1>
         {user && (
           <div className="app-header-user">
+            <NotificationCenter />
             <span>{user.email}</span>
             <Link to="/browse-rides" className="app-link-button">
               Browse rides
+            </Link>
+            <Link to="/driver-requests" className="app-link-button">
+              My ride requests
             </Link>
             <Link to="/routes" className="app-link-button">
               My routes

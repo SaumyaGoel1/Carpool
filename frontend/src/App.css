@@ -295,3 +295,146 @@ main {
   font-weight: 600;
   cursor: pointer;
 }
+
+/* Notification center */
+.notification-center {
+  position: relative;
+}
+
+.notification-bell {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 999px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1.1;
+}
+
+.notification-bell:hover {
+  background: #f3f3f3;
+}
+
+.notification-bell-icon {
+  display: inline-block;
+  font-size: 1.1rem;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  text-align: center;
+  color: #fff;
+  background: #dc2626;
+  border-radius: 999px;
+}
+
+.notification-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  width: 320px;
+  max-height: 400px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.notification-dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.notification-mark-all {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #2563eb;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.notification-mark-all:hover {
+  text-decoration: underline;
+}
+
+.notification-empty {
+  padding: 1.5rem 1rem;
+  margin: 0;
+  font-size: 0.9rem;
+  color: #6b7280;
+  text-align: center;
+}
+
+.notification-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.notification-list li {
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.notification-list li:last-child {
+  border-bottom: none;
+}
+
+.notification-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  text-align: left;
+  color: inherit;
+  background: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.notification-item:hover {
+  background: #f9fafb;
+}
+
+.notification-item-unread {
+  background: #eff6ff;
+}
+
+.notification-item-unread:hover {
+  background: #dbeafe;
+}
+
+.notification-summary {
+  font-weight: 500;
+}
+
+.notification-time {
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: #6b7280;
+}

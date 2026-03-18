@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from './AuthContext'
+import { NotificationCenter } from './NotificationCenter'
 
 type Profile = {
   id: number
@@ -107,9 +108,13 @@ export function ProfilePage() {
           <h1>Profile</h1>
           {user && (
             <div className="app-header-user">
+              <NotificationCenter />
               <span>{user.email}</span>
               <Link to="/driver-requests" className="app-link-button">
                 My ride requests
+              </Link>
+              <Link to="/my-requests" className="app-link-button">
+                My requests
               </Link>
               <Link to="/browse-rides" className="app-link-button">
                 Browse rides
@@ -138,9 +143,13 @@ export function ProfilePage() {
           <h1>Profile</h1>
           {user && (
             <div className="app-header-user">
+              <NotificationCenter />
               <span>{user.email}</span>
               <Link to="/driver-requests" className="app-link-button">
                 My ride requests
+              </Link>
+              <Link to="/my-requests" className="app-link-button">
+                My requests
               </Link>
               <Link to="/browse-rides" className="app-link-button">
                 Browse rides
@@ -168,9 +177,13 @@ export function ProfilePage() {
         <h1>Profile</h1>
         {user && (
           <div className="app-header-user">
+            <NotificationCenter />
             <span>{user.email}</span>
             <Link to="/driver-requests" className="app-link-button">
               My ride requests
+            </Link>
+            <Link to="/my-requests" className="app-link-button">
+              My requests
             </Link>
             <Link to="/browse-rides" className="app-link-button">
               Browse rides

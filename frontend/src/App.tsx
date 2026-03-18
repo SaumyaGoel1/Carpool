@@ -1,6 +1,7 @@
 import './App.css'
 import { useAuth } from './AuthContext'
 import { Link } from 'react-router-dom'
+import { NotificationCenter } from './NotificationCenter'
 
 function App() {
   const { user, logout } = useAuth()
@@ -11,6 +12,7 @@ function App() {
         <h1>Car Pooling</h1>
         {user && (
           <div className="app-header-user">
+            <NotificationCenter />
             <span>{user.email}</span>
             <Link to="/driver-requests" className="app-link-button">
               My ride requests

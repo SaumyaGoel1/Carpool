@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from './AuthContext'
+import { NotificationCenter } from './NotificationCenter'
 
 type Route = {
   id: number
@@ -178,9 +179,13 @@ export function RoutesPage() {
           <h1>My routes</h1>
           {user && (
             <div className="app-header-user">
+              <NotificationCenter />
               <span>{user.email}</span>
               <Link to="/driver-requests" className="app-link-button">
                 My ride requests
+              </Link>
+              <Link to="/my-requests" className="app-link-button">
+                My requests
               </Link>
               <Link to="/browse-rides" className="app-link-button">
                 Browse rides
@@ -208,9 +213,13 @@ export function RoutesPage() {
         <h1>My routes</h1>
         {user && (
           <div className="app-header-user">
+            <NotificationCenter />
             <span>{user.email}</span>
             <Link to="/driver-requests" className="app-link-button">
               My ride requests
+            </Link>
+            <Link to="/my-requests" className="app-link-button">
+              My requests
             </Link>
             <Link to="/browse-rides" className="app-link-button">
               Browse rides

@@ -51,6 +51,11 @@ class RideOffersController < ActionController::API
     )
 
     if request.save
+      create_notification!(
+        user: offer.route.user,
+        type: "new_request_on_my_ride_offer",
+        reference: request
+      )
       render json: serialize_request(request), status: :created
     else
       render json: { errors: request.errors.full_messages }, status: :unprocessable_entity
@@ -201,6 +206,14 @@ class RideOffersController < ActionController::API
       status: request.status,
       message: request.message
     }
+  end
+
+  def create_notification!(user:, type:, reference:)
+    Notification.create!(
+      user: user,
+      type: type,
+      reference: reference
+    )
   end
 end
 
