@@ -1,0 +1,9 @@
+Hi <%= @requester.email %>,
+
+Your ride request was <%= @request.status %>.
+
+Route: <%= @route.start_location %> → <%= @route.end_location %>
+Driver: <%= @driver.email %>
+
+Message you sent: <%= @request.message.presence || "N/A" %>
+

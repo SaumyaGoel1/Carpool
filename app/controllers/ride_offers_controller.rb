@@ -209,11 +209,13 @@ class RideOffersController < ActionController::API
   end
 
   def create_notification!(user:, type:, reference:)
-    Notification.create!(
+    notification = Notification.create!(
       user: user,
       type: type,
       reference: reference
     )
+    SendNotificationEmailJob.perform_later(notification.id) if EmailNotifications.enabled?
+    notification
   end
 end
 

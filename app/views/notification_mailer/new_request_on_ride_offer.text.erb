@@ -1,0 +1,11 @@
+Hi <%= @driver.email %>,
+
+You have a new ride request.
+
+Route: <%= @route.start_location %> → <%= @route.end_location %>
+Recurrence: <%= @route.recurrence.presence || "N/A" %>
+Time: <%= @route.start_time&.strftime("%H:%M") || "--:--" %> – <%= @route.end_time&.strftime("%H:%M") || "--:--" %>
+
+Requester: <%= @requester.email %>
+Message: <%= @request.message.presence || "N/A" %>
+
