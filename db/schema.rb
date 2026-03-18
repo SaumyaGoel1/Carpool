@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_16_007000) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_17_060233) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -23,6 +23,19 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_16_007000) do
     t.index ["organization_id"], name: "index_memberships_on_organization_id"
     t.index ["user_id", "organization_id"], name: "index_memberships_on_user_id_and_organization_id", unique: true
     t.index ["user_id"], name: "index_memberships_on_user_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "type", null: false
+    t.string "reference_type"
+    t.bigint "reference_id"
+    t.datetime "read_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reference_type", "reference_id"], name: "index_notifications_on_reference_type_and_reference_id"
+    t.index ["user_id", "read_at"], name: "index_notifications_on_user_id_and_read_at"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -42,6 +55,13 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_16_007000) do
     t.index ["requester_id", "ride_offer_id", "status"], name: "index_pooling_requests_on_requester_offer_status"
     t.index ["requester_id"], name: "index_pooling_requests_on_requester_id"
     t.index ["ride_offer_id"], name: "index_pooling_requests_on_ride_offer_id"
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string "name"
+    t.integer "price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "ride_offers", force: :cascade do |t|
@@ -93,6 +113,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_16_007000) do
 
   add_foreign_key "memberships", "organizations"
   add_foreign_key "memberships", "users"
+  add_foreign_key "notifications", "users"
   add_foreign_key "pooling_requests", "ride_offers"
   add_foreign_key "pooling_requests", "users", column: "requester_id"
   add_foreign_key "ride_offers", "routes"

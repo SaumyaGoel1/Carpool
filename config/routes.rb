@@ -28,5 +28,10 @@ Rails.application.routes.draw do
     end
 
     get "my/requests", to: "requests#my_index"
+
+    resources :notifications, only: %i[index] do
+      patch "mark_read", on: :member
+      patch "mark_all_read", on: :collection
+    end
   end
 end
