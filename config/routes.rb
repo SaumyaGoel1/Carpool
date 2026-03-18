@@ -19,6 +19,10 @@ Rails.application.routes.draw do
     resource :profile, only: %i[show update]
 
     resources :routes
+    resources :organizations, only: [] do
+      resources :invitations, only: [:create], controller: "organization_invitations"
+    end
+    post "invitations/accept", to: "invitations#accept"
     resources :ride_offers, only: %i[index create update] do
       post "requests", to: "ride_offers#requests_create"
     end

@@ -10,9 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_17_060233) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_18_010000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "invitations", force: :cascade do |t|
+    t.string "email", null: false
+    t.bigint "organization_id", null: false
+    t.string "token_digest", null: false
+    t.string "status", default: "pending", null: false
+    t.string "role"
+    t.datetime "accepted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id", "email", "status"], name: "index_invitations_on_organization_id_and_email_and_status"
+    t.index ["organization_id"], name: "index_invitations_on_organization_id"
+    t.index ["token_digest"], name: "index_invitations_on_token_digest", unique: true
+  end
 
   create_table "memberships", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -111,6 +125,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_17_060233) do
     t.index ["session_token"], name: "index_users_on_session_token", unique: true
   end
 
+  add_foreign_key "invitations", "organizations"
   add_foreign_key "memberships", "organizations"
   add_foreign_key "memberships", "users"
   add_foreign_key "notifications", "users"

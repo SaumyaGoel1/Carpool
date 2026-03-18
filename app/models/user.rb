@@ -10,5 +10,11 @@ class User < ApplicationRecord
 
   validates :email, presence: true, uniqueness: true,
                     format: { with: URI::MailTo::EMAIL_REGEXP }
+
+  def admin_of?(organization)
+    return false unless organization
+
+    memberships.exists?(organization_id: organization.id, role: "admin")
+  end
 end
 
