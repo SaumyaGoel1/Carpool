@@ -1,6 +1,6 @@
 class RideOffersController < ActionController::API
   before_action :authenticate_user!
-  before_action :set_ride_offer, only: %i[update]
+  before_action :set_ride_offer, only: %i[update withdraw]
 
   def index
     offers = RideOffer
@@ -31,6 +31,19 @@ class RideOffersController < ActionController::API
   def update
     @ride_offer.update!(ride_offer_params.slice(:seats_available, :active))
     render json: serialize_ride_offer(@ride_offer)
+  end
+
+  # PATCH /api/ride_offers/:id/withdraw — set offer inactive and auto-reject pending requests
+  def withdraw
+    PoolingRequest.transaction do
+      @ride_offer.update!(active: false)
+      pending = @ride_offer.pooling_requests.where(status: "pending")
+      pending.find_each do |req|
+        req.update!(status: "rejected")
+        create_notification!(user: req.requester, type: "request_rejected", reference: req)
+      end
+    end
+    render json: serialize_ride_offer(@ride_offer.reload)
   end
 
   def requests_create

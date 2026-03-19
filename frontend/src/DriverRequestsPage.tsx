@@ -109,6 +109,42 @@ export function DriverRequestsPage() {
     }
   }
 
+  async function withdrawOffer(rideOfferId: number) {
+    if (!token) return
+    if (
+      !window.confirm(
+        'Withdraw this offer? The ride will be hidden from Browse rides and any pending requests will be rejected.',
+      )
+    ) {
+      return
+    }
+
+    setActionError(null)
+    setActionSuccess(null)
+    try {
+      const baseUrl =
+        import.meta.env.VITE_API_URL || 'http://localhost:3000'
+      const res = await fetch(`${baseUrl}/api/ride_offers/${rideOfferId}/withdraw`, {
+        method: 'PATCH',
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        const msg =
+          (Array.isArray(body.errors) && body.errors.join(', ')) ||
+          body.error ||
+          'Could not withdraw offer'
+        throw new Error(msg)
+      }
+      setActionSuccess('Offer withdrawn. Pending requests were rejected.')
+      await load()
+    } catch (e) {
+      setActionError(
+        e instanceof Error ? e.message : 'Could not withdraw offer',
+      )
+    }
+  }
+
   return (
     <main>
       <header className="app-header">
@@ -167,9 +203,27 @@ export function DriverRequestsPage() {
               {groups.map((group) => (
                 <li key={group.ride_offer_id} className="routes-item">
                   <div className="routes-item-main">
-                    <div className="routes-line">
-                      <strong>{group.start_location}</strong> →{' '}
-                      <strong>{group.end_location}</strong>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                      <div className="routes-line">
+                        <strong>{group.start_location}</strong> →{' '}
+                        <strong>{group.end_location}</strong>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => withdrawOffer(group.ride_offer_id)}
+                        style={{
+                          padding: '0.4rem 0.9rem',
+                          border: '1px solid #b91c1c',
+                          borderRadius: '6px',
+                          background: '#fff',
+                          color: '#b91c1c',
+                          cursor: 'pointer',
+                          fontSize: '0.9rem',
+                          fontWeight: 500,
+                        }}
+                      >
+                        Withdraw offer
+                      </button>
                     </div>
                     {group.recurrence && (
                       <div className="routes-meta">
@@ -191,7 +245,7 @@ export function DriverRequestsPage() {
                       Seats available: {group.seats_available}
                     </div>
 
-                    <div className="routes-meta">
+                    <div className="routes-meta" style={{ marginTop: '0.5rem' }}>
                       <strong>Requests</strong>
                     </div>
                     <ul>

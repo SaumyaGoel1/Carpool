@@ -65,6 +65,7 @@ export function MyRequestsPage() {
 
   async function cancelRequest(id: number) {
     if (!token) return
+    if (!window.confirm('Cancel this ride request?')) return
 
     setActionError(null)
     setActionSuccess(null)
@@ -197,8 +198,14 @@ export function MyRequestsPage() {
                       type="button"
                       disabled={req.status !== 'pending'}
                       onClick={() => cancelRequest(req.id)}
+                      title={req.status !== 'pending' ? 'Only pending requests can be cancelled' : 'Cancel this ride request'}
+                      style={
+                        req.status === 'pending'
+                          ? { padding: '0.4rem 0.8rem', cursor: 'pointer', border: '1px solid #b91c1c', borderRadius: '6px', background: '#fff', color: '#b91c1c' }
+                          : {}
+                      }
                     >
-                      Cancel
+                      Cancel request
                     </button>
                   </div>
                 </li>

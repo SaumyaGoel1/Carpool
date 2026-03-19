@@ -1,5 +1,7 @@
 class RideOffer < ApplicationRecord
   belongs_to :route
+  has_many :pooling_requests, dependent: :destroy
+  has_many :ride_participants, dependent: :destroy
 
   delegate :organization_id, to: :route
 

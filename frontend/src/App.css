@@ -28,7 +28,7 @@ main {
 
 .app-header-user button {
   padding: 0.35rem 0.75rem;
-  border-radius: 999px;
+  border-radius: 6px;
   border: 1px solid #ccc;
   background: #fff;
   cursor: pointer;
@@ -36,6 +36,36 @@ main {
 
 .app-header-user button:hover {
   background: #f3f3f3;
+}
+
+.home-intro {
+  max-width: 42rem;
+}
+
+.home-roles {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.home-roles h2 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.1rem;
+}
+
+.home-roles p,
+.home-roles ul {
+  margin: 0.5rem 0;
+}
+
+.home-roles ul {
+  padding-left: 1.25rem;
+}
+
+.home-roles li {
+  margin: 0.35rem 0;
 }
 
 .auth-layout {
@@ -147,7 +177,7 @@ main {
 
 .app-link-button {
   padding: 0.35rem 0.75rem;
-  border-radius: 999px;
+  border-radius: 6px;
   border: 1px solid #ccc;
   background: #fff;
   font-size: 0.9rem;

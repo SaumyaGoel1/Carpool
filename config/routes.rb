@@ -30,6 +30,9 @@ Rails.application.routes.draw do
     post "invitations/accept", to: "invitations#accept"
     patch "users/:id/deactivate", to: "users#deactivate"
     resources :ride_offers, only: %i[index create update] do
+      member do
+        patch :withdraw
+      end
       post "requests", to: "ride_offers#requests_create"
     end
 
