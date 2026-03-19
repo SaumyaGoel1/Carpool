@@ -13,6 +13,7 @@ import { DriverRequestsPage } from './DriverRequestsPage'
 import { MyRequestsPage } from './MyRequestsPage'
 import { MembersPage } from './MembersPage'
 import { OrganizationSettingsPage } from './OrganizationSettingsPage'
+import { HistoryPage } from './HistoryPage'
 
 createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
@@ -29,6 +30,7 @@ createRoot(document.getElementById('root') as HTMLElement).render(
             <Route path="/my-requests" element={<MyRequestsPage />} />
             <Route path="/members" element={<MembersPage />} />
             <Route path="/organization-settings" element={<OrganizationSettingsPage />} />
+            <Route path="/history" element={<HistoryPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

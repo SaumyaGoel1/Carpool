@@ -42,6 +42,8 @@ Rails.application.routes.draw do
 
     get "my/requests", to: "requests#my_index"
 
+    get "history", to: "history#index"
+
     resources :notifications, only: [:index] do
       member do
         patch :mark_read

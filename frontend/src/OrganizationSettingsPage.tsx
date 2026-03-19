@@ -124,6 +124,7 @@ export function OrganizationSettingsPage() {
               <Link to="/my-requests" className="app-link-button">My requests</Link>
               <Link to="/browse-rides" className="app-link-button">Browse rides</Link>
               <Link to="/routes" className="app-link-button">My routes</Link>
+              <Link to="/history" className="app-link-button">History</Link>
               <Link to="/profile" className="app-link-button">Profile</Link>
               <Link to="/members" className="app-link-button">Members</Link>
               <Link to="/organization-settings" className="app-link-button">Organization</Link>
@@ -149,6 +150,7 @@ export function OrganizationSettingsPage() {
               <Link to="/my-requests" className="app-link-button">My requests</Link>
               <Link to="/browse-rides" className="app-link-button">Browse rides</Link>
               <Link to="/routes" className="app-link-button">My routes</Link>
+              <Link to="/history" className="app-link-button">History</Link>
               <Link to="/profile" className="app-link-button">Profile</Link>
               <Link to="/members" className="app-link-button">Members</Link>
               <Link to="/organization-settings" className="app-link-button">Organization</Link>
@@ -173,6 +175,7 @@ export function OrganizationSettingsPage() {
             <Link to="/my-requests" className="app-link-button">My requests</Link>
             <Link to="/browse-rides" className="app-link-button">Browse rides</Link>
             <Link to="/routes" className="app-link-button">My routes</Link>
+            <Link to="/history" className="app-link-button">History</Link>
             <Link to="/profile" className="app-link-button">Profile</Link>
             <Link to="/members" className="app-link-button">Members</Link>
             <Link to="/organization-settings" className="app-link-button">Organization</Link>

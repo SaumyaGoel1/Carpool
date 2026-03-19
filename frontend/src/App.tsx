@@ -26,6 +26,9 @@ function App() {
             <Link to="/routes" className="app-link-button">
               My routes
             </Link>
+            <Link to="/history" className="app-link-button">
+              History
+            </Link>
             <Link to="/profile" className="app-link-button">
               Profile
             </Link>
