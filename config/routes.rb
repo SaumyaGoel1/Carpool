@@ -19,6 +19,9 @@ Rails.application.routes.draw do
     resource :profile, only: %i[show update]
 
     resources :routes
+    get "organizations/current", to: "organizations#show", defaults: { id: "current" }
+    patch "organizations/current", to: "organizations#update", defaults: { id: "current" }
+    resources :organizations, only: %i[show update]
     resources :organizations, only: [] do
       resources :invitations, only: [:create], controller: "organization_invitations"
       get "members", to: "organization_members#index"

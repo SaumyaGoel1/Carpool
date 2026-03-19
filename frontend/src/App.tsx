@@ -32,6 +32,9 @@ function App() {
             <Link to="/members" className="app-link-button">
               Members
             </Link>
+            <Link to="/organization-settings" className="app-link-button">
+              Organization
+            </Link>
             <button type="button" onClick={logout}>
               Logout
             </button>
