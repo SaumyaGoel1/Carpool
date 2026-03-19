@@ -21,8 +21,11 @@ Rails.application.routes.draw do
     resources :routes
     resources :organizations, only: [] do
       resources :invitations, only: [:create], controller: "organization_invitations"
+      get "members", to: "organization_members#index"
     end
+    get "organizations/current/members", to: "organization_members#index", defaults: { id: "current" }
     post "invitations/accept", to: "invitations#accept"
+    patch "users/:id/deactivate", to: "users#deactivate"
     resources :ride_offers, only: %i[index create update] do
       post "requests", to: "ride_offers#requests_create"
     end

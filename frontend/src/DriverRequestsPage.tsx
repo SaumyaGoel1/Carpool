@@ -129,6 +129,9 @@ export function DriverRequestsPage() {
             <Link to="/profile" className="app-link-button">
               Profile
             </Link>
+            <Link to="/members" className="app-link-button">
+              Members
+            </Link>
             <button type="button" onClick={logout}>
               Logout
             </button>

@@ -11,6 +11,7 @@ import { RoutesPage } from './RoutesPage'
 import { BrowseRidesPage } from './BrowseRidesPage'
 import { DriverRequestsPage } from './DriverRequestsPage'
 import { MyRequestsPage } from './MyRequestsPage'
+import { MembersPage } from './MembersPage'
 
 createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
@@ -25,6 +26,7 @@ createRoot(document.getElementById('root') as HTMLElement).render(
             <Route path="/browse-rides" element={<BrowseRidesPage />} />
             <Route path="/driver-requests" element={<DriverRequestsPage />} />
             <Route path="/my-requests" element={<MyRequestsPage />} />
+            <Route path="/members" element={<MembersPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -196,6 +196,9 @@ export function RoutesPage() {
               <Link to="/profile" className="app-link-button">
                 Profile
               </Link>
+              <Link to="/members" className="app-link-button">
+                Members
+              </Link>
               <button type="button" onClick={logout}>
                 Logout
               </button>
@@ -229,6 +232,9 @@ export function RoutesPage() {
             </Link>
             <Link to="/profile" className="app-link-button">
               Profile
+            </Link>
+            <Link to="/members" className="app-link-button">
+              Members
             </Link>
             <button type="button" onClick={logout}>
               Logout

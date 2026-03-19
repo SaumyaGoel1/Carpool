@@ -16,5 +16,9 @@ class User < ApplicationRecord
 
     memberships.exists?(organization_id: organization.id, role: "admin")
   end
+
+  def deactivate!
+    update!(active: false, deactivated_at: Time.current)
+  end
 end
 

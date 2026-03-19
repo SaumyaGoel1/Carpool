@@ -10,6 +10,8 @@ import {
 type User = {
   id: number
   email: string
+  organization_id?: number | null
+  role?: string | null
 }
 
 type AuthContextValue = {
@@ -65,7 +67,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       const data = await response.json()
       const sessionToken = data.session_token as string
-      const loggedInUser = data.user as User
+      const loggedInUser = {
+        ...(data.user as User),
+        organization_id: (data.organization_id as number | null | undefined) ?? null,
+        role: (data.role as string | null | undefined) ?? null,
+      }
 
       setToken(sessionToken)
       setUser(loggedInUser)
