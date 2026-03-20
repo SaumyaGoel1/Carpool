@@ -2,7 +2,6 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
   ReactNode,
@@ -33,8 +32,25 @@ const TOKEN_KEY = 'cp_session_token'
 const USER_KEY = 'cp_user'
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [token, setToken] = useState<string | null>(null)
+  // Important: use sessionStorage (per-tab) so multiple accounts/tabs don't overwrite each other.
+  const storage = window.sessionStorage
+
+  const [user, setUser] = useState<User | null>(() => {
+    try {
+      const storedUser = storage.getItem(USER_KEY)
+      if (!storedUser) return null
+      return JSON.parse(storedUser) as User
+    } catch {
+      return null
+    }
+  })
+  const [token, setToken] = useState<string | null>(() => {
+    try {
+      return storage.getItem(TOKEN_KEY)
+    } catch {
+      return null
+    }
+  })
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -50,18 +66,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return null
   }, [user])
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem(TOKEN_KEY)
-    const storedUser = localStorage.getItem(USER_KEY)
-    if (storedToken && storedUser) {
-      setToken(storedToken)
-      try {
-        setUser(JSON.parse(storedUser))
-      } catch {
-        setUser(null)
-      }
-    }
-  }, [])
+  // Token/user are loaded synchronously from localStorage (via useState initializers)
+  // so that ProtectedRoute doesn't redirect on the first render after reload.
 
   const login = useCallback(async (email: string, password: string) => {
     setIsLoading(true)
@@ -91,8 +97,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       setToken(sessionToken)
       setUser(loggedInUser)
-      localStorage.setItem(TOKEN_KEY, sessionToken)
-      localStorage.setItem(USER_KEY, JSON.stringify(loggedInUser))
+      storage.setItem(TOKEN_KEY, sessionToken)
+      storage.setItem(USER_KEY, JSON.stringify(loggedInUser))
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Login failed')
       throw e
@@ -104,8 +110,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = useCallback(() => {
     setUser(null)
     setToken(null)
-    localStorage.removeItem(TOKEN_KEY)
-    localStorage.removeItem(USER_KEY)
+    storage.removeItem(TOKEN_KEY)
+    storage.removeItem(USER_KEY)
   }, [])
 
   const value: AuthContextValue = {
