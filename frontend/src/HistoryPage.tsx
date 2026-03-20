@@ -1,7 +1,6 @@
 import { FormEvent, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useAuth } from './AuthContext'
-import { NotificationCenter } from './NotificationCenter'
+import { PersonaHeader } from './PersonaHeader'
 
 type RouteInfo = {
   start_location: string
@@ -43,7 +42,7 @@ type HistoryResponse = {
 }
 
 export function HistoryPage() {
-  const { token, user, logout } = useAuth()
+  const { token } = useAuth()
   const [data, setData] = useState<HistoryResponse | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -96,42 +95,7 @@ export function HistoryPage() {
 
   return (
     <main>
-      <header className="app-header">
-        <h1>History</h1>
-        {user && (
-          <div className="app-header-user">
-            <NotificationCenter />
-            <span>{user.email}</span>
-            <Link to="/driver-requests" className="app-link-button">
-              My ride requests
-            </Link>
-            <Link to="/my-requests" className="app-link-button">
-              My requests
-            </Link>
-            <Link to="/browse-rides" className="app-link-button">
-              Browse rides
-            </Link>
-            <Link to="/routes" className="app-link-button">
-              My routes
-            </Link>
-            <Link to="/history" className="app-link-button">
-              History
-            </Link>
-            <Link to="/profile" className="app-link-button">
-              Profile
-            </Link>
-            <Link to="/members" className="app-link-button">
-              Members
-            </Link>
-            <Link to="/organization-settings" className="app-link-button">
-              Organization
-            </Link>
-            <button type="button" onClick={logout}>
-              Logout
-            </button>
-          </div>
-        )}
-      </header>
+      <PersonaHeader title="History" />
 
       <section className="routes-layout">
         <section className="routes-form-card">

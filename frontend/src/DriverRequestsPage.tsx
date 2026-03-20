@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useAuth } from './AuthContext'
-import { NotificationCenter } from './NotificationCenter'
+import { PersonaHeader } from './PersonaHeader'
 
 type Request = {
   id: number
@@ -25,7 +24,7 @@ type Group = {
 }
 
 export function DriverRequestsPage() {
-  const { token, user, logout } = useAuth()
+  const { token } = useAuth()
   const [groups, setGroups] = useState<Group[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -147,37 +146,7 @@ export function DriverRequestsPage() {
 
   return (
     <main>
-      <header className="app-header">
-        <h1>My ride requests</h1>
-        {user && (
-          <div className="app-header-user">
-            <NotificationCenter />
-            <span>{user.email}</span>
-            <Link to="/browse-rides" className="app-link-button">
-              Browse rides
-            </Link>
-            <Link to="/my-requests" className="app-link-button">
-              My requests
-            </Link>
-            <Link to="/routes" className="app-link-button">
-              My routes
-            </Link>
-            <Link to="/history" className="app-link-button">History</Link>
-            <Link to="/profile" className="app-link-button">
-              Profile
-            </Link>
-            <Link to="/members" className="app-link-button">
-              Members
-            </Link>
-            <Link to="/organization-settings" className="app-link-button">
-              Organization
-            </Link>
-            <button type="button" onClick={logout}>
-              Logout
-            </button>
-          </div>
-        )}
-      </header>
+      <PersonaHeader title="My ride requests" />
 
       <section className="routes-layout">
         <section className="routes-list">

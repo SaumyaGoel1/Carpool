@@ -1,7 +1,6 @@
 import { FormEvent, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useAuth } from './AuthContext'
-import { NotificationCenter } from './NotificationCenter'
+import { PersonaHeader } from './PersonaHeader'
 
 type Profile = {
   id: number
@@ -12,7 +11,7 @@ type Profile = {
 }
 
 export function ProfilePage() {
-  const { token, user, logout } = useAuth()
+  const { token } = useAuth()
   const [profile, setProfile] = useState<Profile | null>(null)
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
@@ -104,40 +103,7 @@ export function ProfilePage() {
   if (loading) {
     return (
       <main>
-        <header className="app-header">
-          <h1>Profile</h1>
-          {user && (
-            <div className="app-header-user">
-              <NotificationCenter />
-              <span>{user.email}</span>
-              <Link to="/driver-requests" className="app-link-button">
-                My ride requests
-              </Link>
-              <Link to="/my-requests" className="app-link-button">
-                My requests
-              </Link>
-              <Link to="/browse-rides" className="app-link-button">
-                Browse rides
-              </Link>
-              <Link to="/routes" className="app-link-button">
-                My routes
-              </Link>
-              <Link to="/history" className="app-link-button">History</Link>
-              <Link to="/profile" className="app-link-button">
-                Profile
-              </Link>
-              <Link to="/members" className="app-link-button">
-                Members
-              </Link>
-              <Link to="/organization-settings" className="app-link-button">
-                Organization
-              </Link>
-              <button type="button" onClick={logout}>
-                Logout
-              </button>
-            </div>
-          )}
-        </header>
+        <PersonaHeader title="Profile" />
         <p>Loading profile…</p>
       </main>
     )
@@ -146,40 +112,7 @@ export function ProfilePage() {
   if (!profile) {
     return (
       <main>
-        <header className="app-header">
-          <h1>Profile</h1>
-          {user && (
-            <div className="app-header-user">
-              <NotificationCenter />
-              <span>{user.email}</span>
-              <Link to="/driver-requests" className="app-link-button">
-                My ride requests
-              </Link>
-              <Link to="/my-requests" className="app-link-button">
-                My requests
-              </Link>
-              <Link to="/browse-rides" className="app-link-button">
-                Browse rides
-              </Link>
-              <Link to="/routes" className="app-link-button">
-                My routes
-              </Link>
-              <Link to="/history" className="app-link-button">History</Link>
-              <Link to="/profile" className="app-link-button">
-                Profile
-              </Link>
-              <Link to="/members" className="app-link-button">
-                Members
-              </Link>
-              <Link to="/organization-settings" className="app-link-button">
-                Organization
-              </Link>
-              <button type="button" onClick={logout}>
-                Logout
-              </button>
-            </div>
-          )}
-        </header>
+        <PersonaHeader title="Profile" />
         <p>Profile not available.</p>
       </main>
     )
@@ -187,40 +120,7 @@ export function ProfilePage() {
 
   return (
     <main>
-      <header className="app-header">
-        <h1>Profile</h1>
-        {user && (
-          <div className="app-header-user">
-            <NotificationCenter />
-            <span>{user.email}</span>
-            <Link to="/driver-requests" className="app-link-button">
-              My ride requests
-            </Link>
-            <Link to="/my-requests" className="app-link-button">
-              My requests
-            </Link>
-            <Link to="/browse-rides" className="app-link-button">
-              Browse rides
-            </Link>
-            <Link to="/routes" className="app-link-button">
-              My routes
-            </Link>
-            <Link to="/history" className="app-link-button">History</Link>
-            <Link to="/profile" className="app-link-button">
-              Profile
-            </Link>
-            <Link to="/members" className="app-link-button">
-              Members
-            </Link>
-            <Link to="/organization-settings" className="app-link-button">
-              Organization
-            </Link>
-            <button type="button" onClick={logout}>
-              Logout
-            </button>
-          </div>
-        )}
-      </header>
+      <PersonaHeader title="Profile" />
 
       <section className="profile-card">
         <form className="profile-form" onSubmit={handleSubmit}>

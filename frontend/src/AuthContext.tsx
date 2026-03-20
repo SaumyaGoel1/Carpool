@@ -3,6 +3,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
   ReactNode,
 } from 'react'
@@ -17,11 +18,14 @@ type User = {
 type AuthContextValue = {
   user: User | null
   token: string | null
+  persona: Persona
   login: (email: string, password: string) => Promise<void>
   logout: () => void
   isLoading: boolean
   error: string | null
 }
+
+type Persona = 'driver' | 'rider' | null
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined)
 
@@ -33,6 +37,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const persona = useMemo<Persona>(() => {
+    const email = user?.email?.toLowerCase()
+    if (!email) return null
+
+    const driverEmail = (import.meta.env.VITE_DRIVER_EMAIL ?? 'driver@gmail.com').toLowerCase()
+    const riderEmail = (import.meta.env.VITE_RIDER_EMAIL ?? 'rider@gmail.com').toLowerCase()
+
+    if (email === driverEmail) return 'driver'
+    if (email === riderEmail) return 'rider'
+    return null
+  }, [user])
 
   useEffect(() => {
     const storedToken = localStorage.getItem(TOKEN_KEY)
@@ -95,6 +111,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value: AuthContextValue = {
     user,
     token,
+    persona,
     login,
     logout,
     isLoading,

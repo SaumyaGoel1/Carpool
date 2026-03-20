@@ -11,8 +11,8 @@ services:
       - "3000:3000"
     environment:
       RAILS_ENV: development
-    command: >
-      sh -c "rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p 3000"
+      # Allow browser-based requests from the Vite dev server.
+      FRONTEND_ORIGIN: http://localhost:5173
     stdin_open: true
     tty: true
     depends_on:
@@ -22,7 +22,27 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
+      POSTGRES_DB: app_development
     volumes:
       - pg_data:/var/lib/postgresql/data
+  frontend:
+    build:
+      context: ./frontend
+      target: development
+    volumes:
+      - ./frontend:/app
+      # Keep container-installed node_modules so bind mounts don't clobber them.
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost:3000
+      # Used to decide whether to show driver vs rider UI.
+      VITE_DRIVER_EMAIL: driver@gmail.com
+      VITE_RIDER_EMAIL: rider@gmail.com
+    depends_on:
+      - app
+    stdin_open: true
+    tty: true
 volumes:
   pg_data:

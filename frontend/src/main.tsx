@@ -5,6 +5,7 @@ import App from './App'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from './AuthContext'
 import { ProtectedRoute } from './ProtectedRoute'
+import { PersonaProtectedRoute } from './PersonaProtectedRoute'
 import { LoginPage } from './LoginPage'
 import { ProfilePage } from './ProfilePage'
 import { RoutesPage } from './RoutesPage'
@@ -24,13 +25,19 @@ createRoot(document.getElementById('root') as HTMLElement).render(
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<App />} />
             <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/routes" element={<RoutesPage />} />
-            <Route path="/browse-rides" element={<BrowseRidesPage />} />
-            <Route path="/driver-requests" element={<DriverRequestsPage />} />
-            <Route path="/my-requests" element={<MyRequestsPage />} />
             <Route path="/members" element={<MembersPage />} />
             <Route path="/organization-settings" element={<OrganizationSettingsPage />} />
             <Route path="/history" element={<HistoryPage />} />
+
+            <Route element={<PersonaProtectedRoute allowed={['driver']} />}>
+              <Route path="/routes" element={<RoutesPage />} />
+              <Route path="/driver-requests" element={<DriverRequestsPage />} />
+            </Route>
+
+            <Route element={<PersonaProtectedRoute allowed={['rider']} />}>
+              <Route path="/browse-rides" element={<BrowseRidesPage />} />
+              <Route path="/my-requests" element={<MyRequestsPage />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>
